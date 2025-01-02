@@ -1,8 +1,8 @@
 export interface TodoItem {
-  id: number;
+  id: string;
   title: string;
   content: string;
   dueDate: string;
-  state: string;
+  state: number;
   isDeleted: boolean;
 }

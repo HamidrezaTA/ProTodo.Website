@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TodoItem } from "../types/TodoItem";
-import { getAllTodoItems } from "../services/TodoService";
+import { fetchTodos } from "../services/TodoService";
+import { Link } from "react-router-dom";
 
 const TodoList = () => {
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
@@ -10,7 +11,7 @@ const TodoList = () => {
   useEffect(() => {
     const getTodos = async () => {
       try {
-        const data = await getAllTodoItems();
+        const data = await fetchTodos();
         setTodoItems(data);
       } catch (err) {
         setError((err as Error).message);
@@ -36,6 +37,7 @@ const TodoList = () => {
             <th>Due Date</th>
             <th>Status</th>
             <th>Deleted</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -44,9 +46,16 @@ const TodoList = () => {
               <td>{index}</td>
               <td>{todoItem.title}</td>
               <td>{todoItem.content}</td>
-              <td>{new Date(todoItem.dueDate).toLocaleDateString()}</td>
-              <td>{todoItem.state}</td>
-              <td>{todoItem.isDeleted ? "Yes" : "No"}</td>
+              <td style={{ textAlign: "center" }}>
+                {new Date(todoItem.dueDate).toLocaleDateString()}
+              </td>
+              <td style={{ textAlign: "center" }}>{todoItem.state}</td>
+              <td style={{ textAlign: "center" }}>
+                {todoItem.isDeleted ? "Yes" : "No"}
+              </td>
+              <td>
+                <Link to={`/todo-item/${todoItem.id}`}>Edit</Link>
+              </td>
             </tr>
           ))}
         </tbody>
